@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const exphbs = require('express-handlebars')
 const app = express()
 
 if (process.env.NODE_ENV !== 'production') {
@@ -18,8 +19,11 @@ db.once('open', () => {
   console.log('MongoDB connected!')
 })
 
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.render('index')
 })
 
 app.listen(3000, () => {
