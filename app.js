@@ -40,6 +40,14 @@ app.post('/todos', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
+// detail
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id 
+  Todo.findById(id)
+    .lean()
+    .then(todo => res.render('detail', { todo }))
+    .catch(error => console.log(error))
+})
 
 app.listen(3000, () => {
   console.log('This app is listening on http://localhost:3000')

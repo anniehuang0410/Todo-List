@@ -1,7 +1,10 @@
 
-<a href="/todos/new">new todos</a>
+<a href="./todos/new">new todos</a>
 <ul>
   {{#each todo}}
-  <li>{{this.name}}</li>
+  <li>
+    {{this.name}}
+    <a href="./todos/{{this._id}}">detail</a>
+  </li>
   {{/each}}
 </ul>
