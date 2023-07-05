@@ -20,11 +20,24 @@ db.once('open', () => {
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')
+app.use(express.urlencoded({ extended: true }))
 
+// index
 app.get('/', (req, res) => {
   Todo.find()
     .lean()
     .then(todo => res.render('index', { todo }))
+    .catch(error => console.log(error))
+})
+// new
+app.get('/todos/new', (req, res) => {
+  res.render('new')
+})
+// add new todos
+app.post('/todos', (req, res) => {
+  const name = req.body.name
+  Todo.create({ name })
+    .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 
