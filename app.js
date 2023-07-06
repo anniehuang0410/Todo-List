@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const methodOverride = require('method-override')
 const Todo = require('./models/todo')
 const app = express()
 
@@ -21,12 +22,13 @@ db.once('open', () => {
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
 app.set('view engine', 'hbs')
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // index
 app.get('/', (req, res) => {
   Todo.find()
     .lean()
-    .sort({ _id: 'asc' })
+    .sort({ _id : 'asc' })
     .then(todo => res.render('index', { todo }))
     .catch(error => console.log(error))
 })
@@ -58,7 +60,7 @@ app.get('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 // edit
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone} = req.body
   Todo.findById(id)
@@ -71,7 +73,7 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 // delete
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   Todo.findById(id)
     .then(todo => todo.remove())
