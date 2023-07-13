@@ -7,6 +7,7 @@ if(process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+const PORT = process.env.PORT
 const routes = require('./routes')
 const usePassport = require('./config/passport')
 const db = require('./config/mongoose')
@@ -38,6 +39,6 @@ app.use((req, res, next) => {
 
 app.use(routes)
 
-app.listen(3000, () => {
-  console.log('This app is listening on http://localhost:3000')
+app.listen(PORT, () => {
+  console.log(`This app is listening on http://localhost:${PORT}`)
 })
